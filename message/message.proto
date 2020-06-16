@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package messageapi;
+
+import "google/protobuf/timestamp.proto";
+
+message Message {
+    string Id = 1;
+    string Content = 2;
+    google.protobuf.Timestamp Time = 4;
+}
+
+message User {
+    string Id = 1;
+    string name = 2;
+}
+
+message Connect {
+    User user = 1;
+    bool active = 2;
+}
+
+message Close {}
+
+service MessageService {
+    // CreateStream is used to open the client message stream
+    rpc CreateStream(Connect) returns (stream Message);
+    // BroadcastStream takes each message and returns it to the client to be used for display
+    rpc BroadcastStream(Message) returns (Close);
+}
